@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { X, Sparkles, Languages } from 'lucide-react';
+import { X, Sparkles, Languages, RefreshCw } from 'lucide-react';
 import type { DemoEmail, StudentProfile } from '@/types';
 import { generateDemoResponse, type DemoResponse } from '@/data/demo-responses';
 
@@ -144,6 +144,20 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
             </div>
           </div>
 
+          {/* Reanalyze Button */}
+          <div className="mb-6">
+            <Button
+              variant="outline"
+              className="w-full bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 border-indigo-200 dark:border-indigo-800 hover:from-indigo-100 hover:to-purple-100 dark:hover:from-indigo-950/50 dark:hover:to-purple-950/50 transition-all"
+              onClick={() => {}}
+            >
+              <RefreshCw className="h-4 w-4 mr-2 text-indigo-600 dark:text-indigo-400" />
+              <span className="text-sm font-medium text-indigo-900 dark:text-indigo-300">
+                Reanalyze Email with Latest AI Models
+              </span>
+            </Button>
+          </div>
+
           {/* Email Body */}
           <div className="mb-6">
             <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
@@ -256,11 +270,8 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
                   size="lg"
                 >
                   <Sparkles className="h-4 w-4 mr-2" />
-                  Draft AI Response (All 5 Tools)
+                  Draft AI Response
                 </Button>
-                <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
-                  See Claude, Slate, s2, Lingo, and Cactus work together
-                </p>
               </div>
             )}
 
@@ -398,48 +409,6 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
                         </div>
                       </>
                     )}
-
-                    {/* Tool Contributions */}
-                    <div className="space-y-2">
-                      <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Tool Contributions:</p>
-                      <div className="grid gap-2">
-                        <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded p-2">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm">🧠</span>
-                            <span className="text-xs font-semibold text-purple-900 dark:text-purple-300">Claude</span>
-                          </div>
-                          <p className="text-xs text-gray-700 dark:text-gray-300">{generatedResponse.toolContributions.claude}</p>
-                        </div>
-                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded p-2">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm">🎯</span>
-                            <span className="text-xs font-semibold text-blue-900 dark:text-blue-300">Slate</span>
-                          </div>
-                          <p className="text-xs text-gray-700 dark:text-gray-300">{generatedResponse.toolContributions.slate}</p>
-                        </div>
-                        <div className="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800 rounded p-2">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm">📊</span>
-                            <span className="text-xs font-semibold text-cyan-900 dark:text-cyan-300">s2.dev</span>
-                          </div>
-                          <p className="text-xs text-gray-700 dark:text-gray-300">{generatedResponse.toolContributions.s2}</p>
-                        </div>
-                        <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded p-2">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm">🌍</span>
-                            <span className="text-xs font-semibold text-emerald-900 dark:text-emerald-300">Lingo</span>
-                          </div>
-                          <p className="text-xs text-gray-700 dark:text-gray-300">{generatedResponse.toolContributions.lingo}</p>
-                        </div>
-                        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded p-2">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm">⚡</span>
-                            <span className="text-xs font-semibold text-green-900 dark:text-green-300">Cactus</span>
-                          </div>
-                          <p className="text-xs text-gray-700 dark:text-gray-300">{generatedResponse.toolContributions.cactus}</p>
-                        </div>
-                      </div>
-                    </div>
 
                     {/* Action Buttons */}
                     <div className="flex gap-2">

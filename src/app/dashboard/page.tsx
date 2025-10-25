@@ -219,7 +219,7 @@ export default function Dashboard() {
                 Analyzing Email with Real-Time AI
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                Watch all 5 YC tools work together...
+                Analyzing...
               </p>
 
               {/* Tool activation animation */}

@@ -104,38 +104,10 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
                       <Badge variant="outline" className="text-xs">
                         {template.studentName}
                       </Badge>
-                      {template.expectedRisk !== 'TBD - Real-time analysis' && (
-                        <Badge
-                          className={`text-xs ${
-                            template.expectedRisk.startsWith('8') || template.expectedRisk.startsWith('7')
-                              ? 'bg-red-100 text-red-800'
-                              : template.expectedRisk.startsWith('5') || template.expectedRisk.startsWith('4')
-                              ? 'bg-amber-100 text-amber-800'
-                              : 'bg-green-100 text-green-800'
-                          }`}
-                        >
-                          {template.expectedRisk.split(' ')[0]}
-                        </Badge>
-                      )}
                     </div>
                   </button>
                 ))}
               </div>
-
-              {/* Template Info */}
-              {selectedTemplate && (
-                <Card className="mt-4 bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800">
-                  <CardContent className="p-3">
-                    <p className="text-xs font-semibold text-purple-900 dark:text-purple-300 mb-1">Expected Analysis:</p>
-                    <p className="text-xs text-gray-700 dark:text-gray-300">
-                      <span className="font-medium">Risk:</span> {selectedTemplate.expectedRisk}
-                    </p>
-                    <p className="text-xs text-gray-700 dark:text-gray-300">
-                      <span className="font-medium">Sentiment:</span> {selectedTemplate.expectedSentiment}
-                    </p>
-                  </CardContent>
-                </Card>
-              )}
             </div>
 
             {/* Right: Email Composer */}
@@ -220,13 +192,7 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
                   <div className="flex items-start gap-2">
                     <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
                     <div className="text-xs text-blue-900 dark:text-blue-300">
-                      <p className="font-semibold mb-1">Real-Time AI Analysis</p>
-                      <p className="text-blue-700 dark:text-blue-400">
-                        When you click "Send & Analyze", all 5 YC tools will activate:
-                        <span className="block mt-1">
-                          🧠 Claude • 🎯 Slate • 📊 s2.dev • 🌍 Lingo • ⚡ Cactus
-                        </span>
-                      </p>
+                      <p className="font-semibold">Real-Time AI Analysis</p>
                     </div>
                   </div>
                 </div>
