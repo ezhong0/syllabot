@@ -1,0 +1,75 @@
+{
+  "email-001": {
+    "emailId": "email-001",
+    "studentId": "sarah-chen",
+    "studentName": "Sarah Chen",
+    "analysis": {
+      "riskScore": 7,
+      "pattern": "perfectionism spiral",
+      "confidence": 85,
+      "hiddenMeaning": "I'm experiencing intense anxiety and stress about my academic performance, and this grade feels like a personal failure despite my significant effort.",
+      "evidence": [
+        "Email is shorter than baseline (58 vs 85 words) suggesting emotional distress affecting communication",
+        "Emphasis on time spent (12 hours) indicates student is equating effort with deserved outcome",
+        "This is the third email about the same grade, showing fixation and inability to accept the B+",
+        "Parent recently contacted teacher about stress, confirming external signs of distress"
+      ],
+      "recommendation": "Respond with validation of Sarah's effort while clearly explaining the specific areas for improvement. Offer a brief in-person meeting to discuss strategies for managing perfectionism and academic expectations. Consider coordinating with school counselor given the parent's concern about stress levels."
+    },
+    "generatedAt": "2025-10-24T23:19:19.887Z"
+  },
+  "email-002": {
+    "emailId": "email-002",
+    "studentId": "jake-martinez",
+    "studentName": "Jake Martinez",
+    "analysis": {
+      "riskScore": 7,
+      "pattern": "disengagement pattern",
+      "confidence": 85,
+      "hiddenMeaning": "I'm struggling to keep up with class and feeling overwhelmed",
+      "evidence": [
+        "Dramatic decrease in email length (8 words vs typical 45 words) suggests minimal effort and possible withdrawal",
+        "Recent pattern of absences (3 in 2 weeks) combined with significant grade drop (60% vs usual 90%) indicates academic difficulties",
+        "Vague question about test timing rather than content suggests student may be unprepared and anxious"
+      ],
+      "recommendation": "Schedule a brief one-on-one meeting with Jake to discuss his recent absences, quiz performance, and check on his well-being. Offer specific support resources and create a catch-up plan. The abrupt change from his typically engaged behavior warrants direct intervention."
+    },
+    "generatedAt": "2025-10-24T23:19:25.772Z"
+  },
+  "email-003": {
+    "emailId": "email-003",
+    "studentId": "miguel-rodriguez",
+    "studentName": "Miguel Rodriguez",
+    "analysis": {
+      "riskScore": 3,
+      "pattern": "academic comprehension gap",
+      "confidence": 75,
+      "hiddenMeaning": "The student is struggling with academic language and may be hesitant to fully express their confusion due to shyness",
+      "evidence": [
+        "Email is shorter than typical baseline (23 vs 30 words)",
+        "Question specifically focuses on academic terminology ('political implications')",
+        "Student is known to be shy and improving English skills"
+      ],
+      "recommendation": "Respond with a clear explanation of 'political implications' using accessible language, provide an example, and invite Miguel to office hours for additional support if needed. Consider sharing a brief analysis framework to help with this type of question."
+    },
+    "generatedAt": "2025-10-24T23:19:31.046Z"
+  },
+  "email-004": {
+    "emailId": "email-004",
+    "studentId": "emma-johnson",
+    "studentName": "Emma Johnson",
+    "analysis": {
+      "riskScore": 1,
+      "pattern": "simple clarification",
+      "confidence": 90,
+      "hiddenMeaning": "The student is genuinely asking about the page length requirement for the essay",
+      "evidence": [
+        "Email is consistent with student's typical concise communication style",
+        "Content is a straightforward academic question",
+        "Recent activity shows normal engagement patterns"
+      ],
+      "recommendation": "Respond with a clear answer about the essay length requirement. This appears to be a genuine clarification request from a consistently engaged student."
+    },
+    "generatedAt": "2025-10-24T23:19:35.456Z"
+  }
+}
