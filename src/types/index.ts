@@ -25,6 +25,18 @@ export interface DemoEmail {
   timestamp: string;
   wordCount: number;
   sentiment: 'positive' | 'neutral' | 'anxious' | 'frustrated';
+  // Live demo fields (for real-time analysis)
+  isLiveDemo?: boolean;
+  liveAnalysis?: {
+    sentiment: string;
+    riskScore: number;
+    riskReasoning: string;
+    communicationPattern: string;
+    redFlags: string[];
+    recommendedApproach: string;
+    reasoning: string;
+    usedFallback?: boolean;
+  };
 }
 
 export interface StudentProfile {

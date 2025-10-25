@@ -5,7 +5,7 @@ import { logMobileReadiness } from "./cactus";
 // Lazy initialization to ensure environment variables are loaded
 let anthropic: Anthropic | null = null;
 
-function getAnthropicClient(): Anthropic {
+export function getAnthropicClient(): Anthropic {
   if (!anthropic) {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
