@@ -173,15 +173,55 @@ export default function StudentDetailView({ student, onClose, allEmails = [] }: 
 
             <TabsContent value="emails" className="m-0">
               <div className="space-y-2">
-                {studentEmails.map((email) => (
-                  <Card key={email.id} className="p-4 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">{email.subject}</h4>
-                      <span className="text-sm text-gray-500 dark:text-gray-400">{email.timestamp}</span>
-                    </div>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">{email.body}</p>
+                {studentEmails.length === 0 ? (
+                  <Card className="p-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-center">
+                    <Mail className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-3" />
+                    <p className="text-sm text-gray-500 dark:text-gray-400">No emails from this student yet</p>
                   </Card>
-                ))}
+                ) : (
+                  studentEmails.map((email) => (
+                    <Card
+                      key={email.id}
+                      className={`p-4 border-gray-200 dark:border-gray-700 ${
+                        !email.read
+                          ? 'bg-purple-50 dark:bg-purple-900/20 border-l-4 border-l-purple-600 dark:border-l-purple-500'
+                          : 'bg-white dark:bg-gray-800'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="flex items-center gap-2">
+                          <h4 className={`font-semibold ${!email.read ? 'text-purple-900 dark:text-purple-300' : 'text-gray-900 dark:text-gray-100'}`}>
+                            {email.subject}
+                          </h4>
+                          {!email.read && (
+                            <Badge className="bg-purple-600 dark:bg-purple-700 text-white text-xs">New</Badge>
+                          )}
+                        </div>
+                        <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap ml-4">
+                          {new Date(email.timestamp).toLocaleDateString()} {new Date(email.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">{email.body}</p>
+                      <div className="flex items-center gap-2 text-xs">
+                        <Badge
+                          variant="outline"
+                          className={
+                            email.sentiment === 'positive'
+                              ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-300 dark:border-green-700'
+                              : email.sentiment === 'anxious'
+                              ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border-amber-300 dark:border-amber-700'
+                              : email.sentiment === 'frustrated'
+                              ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-300 dark:border-red-700'
+                              : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'
+                          }
+                        >
+                          {email.sentiment}
+                        </Badge>
+                        <span className="text-gray-500 dark:text-gray-400">{email.wordCount} words</span>
+                      </div>
+                    </Card>
+                  ))
+                )}
               </div>
             </TabsContent>
 

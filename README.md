@@ -337,7 +337,7 @@ Built by Edward Zhong for VIBE25-4 Hackathon
 
 **Links:**
 - [Hackathon](https://vibe254.devpost.com)
-- [Demo Video](TBD)
+- [Demo Video](/Users/edwardzhong/Desktop/demo24.mov)
 - [Live Demo](TBD)
 
 ---
