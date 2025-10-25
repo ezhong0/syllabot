@@ -74,7 +74,7 @@ export default function MainTabs({
           <InboxTab dynamicEmails={dynamicEmails} />
         </TabsContent>
         <TabsContent value="students" className="h-full m-0">
-          <StudentsTab />
+          <StudentsTab dynamicEmails={dynamicEmails} />
         </TabsContent>
         <TabsContent value="dashboard" className="h-full m-0">
           <DashboardTab dynamicEmails={dynamicEmails} />

@@ -2,16 +2,23 @@
 
 import { useState, useMemo } from 'react';
 import { studentProfiles, demoEmails } from '@/data/demo-emails';
-import { StudentProfile } from '@/types';
+import { StudentProfile, DemoEmail } from '@/types';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { TrendingUp, TrendingDown, Minus, Mail, Search } from 'lucide-react';
 import StudentDetailView from '../StudentDetailView';
 
-export default function StudentsTab() {
+interface StudentsTabProps {
+  dynamicEmails?: DemoEmail[];
+}
+
+export default function StudentsTab({ dynamicEmails = [] }: StudentsTabProps) {
   const [selectedStudent, setSelectedStudent] = useState<StudentProfile | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Combine all emails (dynamic + demo)
+  const allEmails = useMemo(() => [...dynamicEmails, ...demoEmails], [dynamicEmails]);
 
   // Helper function to calculate risk score based on red flags
   const getRiskScore = (student: StudentProfile) => {
@@ -32,7 +39,7 @@ export default function StudentsTab() {
 
   const enrichedStudents = useMemo(() => {
     return studentProfiles.map((student) => {
-      const studentEmails = demoEmails.filter((e) => e.studentId === student.id);
+      const studentEmails = allEmails.filter((e) => e.studentId === student.id);
       const unreadCount = studentEmails.filter((e) => !e.read).length;
       const lastEmail = studentEmails[0]; // Already sorted by most recent
 
@@ -43,7 +50,7 @@ export default function StudentsTab() {
         emailCount: studentEmails.length,
       };
     });
-  }, []);
+  }, [allEmails]);
 
   const filteredStudents = useMemo(() => {
     if (!searchQuery) return enrichedStudents;
@@ -204,7 +211,11 @@ export default function StudentsTab() {
       </div>
 
       {selectedStudent && (
-        <StudentDetailView student={selectedStudent} onClose={() => setSelectedStudent(null)} />
+        <StudentDetailView
+          student={selectedStudent}
+          onClose={() => setSelectedStudent(null)}
+          allEmails={allEmails}
+        />
       )}
     </div>
   );

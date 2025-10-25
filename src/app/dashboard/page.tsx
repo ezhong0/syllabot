@@ -18,9 +18,12 @@ export default function Dashboard() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [dynamicEmails, setDynamicEmails] = useState<DemoEmail[]>([]);
 
-  // Calculate counts
+  // Calculate counts (dynamically updates when new emails arrive)
   const counts = useMemo(() => {
-    const unreadEmails = demoEmails.filter((e) => !e.read);
+    // Combine dynamic and demo emails
+    const allEmails = [...dynamicEmails, ...demoEmails];
+    const unreadEmails = allEmails.filter((e) => !e.read);
+
     const getRiskScore = (studentId: string) => {
       const student = studentProfiles.find((s) => s.id === studentId);
       if (!student || !student.redFlags) return 0;
@@ -45,16 +48,19 @@ export default function Dashboard() {
       return 1;
     };
 
+    // Get unique students who have sent emails
+    const studentsWithEmails = new Set(allEmails.map(e => e.studentId));
+
     return {
-      inbox: demoEmails.length,
+      inbox: allEmails.length,
       unread: unreadEmails.length,
-      students: studentProfiles.length,
+      students: studentsWithEmails.size, // Count unique students with emails
       highRisk: unreadEmails.filter((e) => getRiskScore(e.studentId) >= 7).length,
       mediumRisk: unreadEmails.filter((e) => getRiskScore(e.studentId) >= 4 && getRiskScore(e.studentId) < 7).length,
       lowRisk: unreadEmails.filter((e) => getRiskScore(e.studentId) < 4).length,
       starred: 0,
     };
-  }, []);
+  }, [dynamicEmails]);
 
   // Handle sending test email as if from a student
   const handleSendEmail = async (emailData: {

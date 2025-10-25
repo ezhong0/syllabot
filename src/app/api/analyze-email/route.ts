@@ -122,7 +122,13 @@ Respond ONLY with valid JSON, no other text.`,
       throw new Error('Unexpected response type from Claude');
     }
 
-    const analysis = JSON.parse(content.text);
+    // Strip markdown code blocks if present (Claude sometimes wraps JSON in ```json blocks)
+    let jsonText = content.text.trim();
+    if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
+    }
+
+    const analysis = JSON.parse(jsonText);
 
     console.log('[API] Analysis complete:', {
       sentiment: analysis.sentiment,

@@ -1,7 +1,6 @@
 'use client';
 
-import { StudentProfile } from '@/types';
-import { demoEmails } from '@/data/demo-emails';
+import { StudentProfile, DemoEmail } from '@/types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -12,12 +11,13 @@ import { useMemo } from 'react';
 interface StudentDetailViewProps {
   student: StudentProfile;
   onClose: () => void;
+  allEmails?: DemoEmail[];
 }
 
-export default function StudentDetailView({ student, onClose }: StudentDetailViewProps) {
+export default function StudentDetailView({ student, onClose, allEmails = [] }: StudentDetailViewProps) {
   const studentEmails = useMemo(() => {
-    return demoEmails.filter((e) => e.studentId === student.id);
-  }, [student.id]);
+    return allEmails.filter((e) => e.studentId === student.id);
+  }, [student.id, allEmails]);
 
   // Calculate risk score based on red flags
   const riskScore = useMemo(() => {
