@@ -12,17 +12,27 @@ interface EmailDetailViewProps {
   email: DemoEmail;
   student: StudentProfile;
   onClose: () => void;
+  onSendResponse?: (studentId: string, response: string) => void;
 }
 
-export function EmailDetailView({ email, student, onClose }: EmailDetailViewProps) {
+export function EmailDetailView({ email, student, onClose, onSendResponse }: EmailDetailViewProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedResponse, setGeneratedResponse] = useState<DemoResponse | null>(null);
   const [showTranslation, setShowTranslation] = useState(false);
+  const [isResponseSent, setIsResponseSent] = useState(false);
 
   // Find the corresponding interaction in student history
   const relatedInteraction = student.interactions.find(
     (i) => i.type === 'email' && i.details === email.body
   );
+
+  // Handle sending the response
+  const handleSendResponse = () => {
+    if (generatedResponse && onSendResponse) {
+      onSendResponse(student.id, generatedResponse.response);
+      setIsResponseSent(true);
+    }
+  };
 
   // Handle AI response generation
   const handleGenerateResponse = async () => {
@@ -416,15 +426,18 @@ export function EmailDetailView({ email, student, onClose }: EmailDetailViewProp
                         variant="outline"
                         size="sm"
                         className="flex-1"
+                        disabled={isResponseSent}
                       >
                         Generate New Response
                       </Button>
                       <Button
+                        onClick={handleSendResponse}
                         variant="default"
                         size="sm"
-                        className="flex-1 bg-green-600 hover:bg-green-700"
+                        className={`flex-1 ${isResponseSent ? 'bg-gray-500' : 'bg-green-600 hover:bg-green-700'}`}
+                        disabled={isResponseSent}
                       >
-                        Copy to Clipboard
+                        {isResponseSent ? 'Response Sent ✓' : 'Send Response'}
                       </Button>
                     </div>
                   </CardContent>

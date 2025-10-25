@@ -16,6 +16,8 @@ export function StudentHistory({ student }: StudentHistoryProps) {
     switch (type) {
       case 'email':
         return '📧';
+      case 'teacher_response':
+        return '✉️';
       case 'grade':
         return '📝';
       case 'absence':
@@ -42,6 +44,8 @@ export function StudentHistory({ student }: StudentHistoryProps) {
     switch (type) {
       case 'email':
         return 'bg-blue-100 text-blue-800';
+      case 'teacher_response':
+        return 'bg-green-100 text-green-800';
       case 'grade':
         return 'bg-purple-100 text-purple-800';
       case 'absence':
@@ -100,7 +104,7 @@ export function StudentHistory({ student }: StudentHistoryProps) {
               </div>
             )}
 
-            {/* Word count for emails */}
+            {/* Word count for emails (not teacher responses) */}
             {interaction.type === 'email' && interaction.details && (
               <div className="mt-2 text-xs text-gray-500">
                 {interaction.details.split(/\s+/).length} words
@@ -119,6 +123,13 @@ export function StudentHistory({ student }: StudentHistoryProps) {
                     </span>
                   </>
                 )}
+              </div>
+            )}
+
+            {/* Word count for teacher responses (no baseline comparison) */}
+            {interaction.type === 'teacher_response' && interaction.details && (
+              <div className="mt-2 text-xs text-green-600">
+                ✓ Response sent • {interaction.details.split(/\s+/).length} words
               </div>
             )}
           </Card>

@@ -55,10 +55,12 @@ STUDENT PROFILE:
 - Baseline attendance: ${(student.baseline.attendanceRate * 100).toFixed(0)}%
 - Baseline participation: ${student.baseline.participationLevel}/10
 - Current grade: ${student.currentGrade}
+- Typical behavior: ${student.baseline.typicalBehavior}
 
 STUDENT EMAIL:
 Subject: "${email.subject}"
 Body: "${email.body}"
+Word count: ${email.body.split(/\s+/).length} words
 
 ANALYSIS REQUIRED:
 Analyze this email and provide a JSON response with:
@@ -70,12 +72,44 @@ Analyze this email and provide a JSON response with:
 6. recommendedApproach: "Warm Check-In" | "Quick Answer" | "Supportive Response" | "Standard Reply"
 7. reasoning: why this approach is recommended
 
-RISK FACTORS TO CONSIDER:
-- Email length vs baseline (current: ${email.body.split(/\s+/).length} words vs ${student.baseline.avgWordCount} avg)
-- Tone and sentiment
-- Urgency markers (last-minute, stressed, etc.)
-- Engagement level (detail, questions, effort)
-- Red flags (avoidance, anxiety, frustration)
+RISK SCORING GUIDELINES:
+Calculate deviation: (current words - baseline words) / baseline words * 100
+
+RISK LEVELS:
+- 1-2 (LOW): Student functioning normally. Deviation < 25% OR positive engagement markers
+  * Brief email that matches student's natural communication style
+  * Simple, straightforward question appropriate to context
+  * No anxiety, frustration, or disengagement markers
+
+- 3-4 (LOW-MEDIUM): Minor deviation from baseline but no red flags
+  * Deviation 25-40% from baseline
+  * Slightly less detail than usual but still engaged
+
+- 5-6 (MEDIUM): Notable deviation with some concern markers
+  * Deviation 40-60% from baseline
+  * Some anxiety/frustration markers OR reduced engagement
+
+- 7-8 (HIGH): Significant deviation with red flags
+  * Deviation > 60% from baseline
+  * Multiple anxiety/frustration markers OR clear disengagement
+
+- 9-10 (CRITICAL): Severe deviation with crisis markers
+  * Deviation > 80% from baseline
+  * Crisis language, withdrawal, or severe distress
+
+IMPORTANT CONTEXT:
+- Some students are NATURALLY BRIEF communicators - this is NORMAL for them
+- A short email is only concerning if it's MUCH shorter than the student's baseline
+- Focus on DEVIATION FROM BASELINE, not absolute word count
+- Consider EMAIL PURPOSE: "When is the test?" doesn't need 50 words - brevity is appropriate
+- High attendance (>95%) + stable grades = LOW RISK even if email is brief
+
+RISK FACTORS TO EVALUATE:
+1. Email length deviation (% change from baseline)
+2. Tone and sentiment (anxious, frustrated, withdrawn?)
+3. Content appropriateness (is brevity fitting for the question type?)
+4. Engagement markers (detail, questions, effort appropriate to context)
+5. Red flags (avoidance, anxiety, frustration, withdrawal)
 
 Respond ONLY with valid JSON, no other text.`,
         },
@@ -123,6 +157,7 @@ function generateFallbackAnalysis(
 ) {
   const wordCount = email.body.split(/\s+/).length;
   const baselineWordCount = student.baseline.avgWordCount;
+  const deviation = ((wordCount - baselineWordCount) / baselineWordCount) * 100;
 
   // Calculate risk based on word count deviation
   let riskScore = 5;
@@ -130,41 +165,55 @@ function generateFallbackAnalysis(
   let recommendedApproach =
     'Standard Reply' as 'Warm Check-In' | 'Quick Answer' | 'Supportive Response' | 'Standard Reply';
 
-  // Very brief emails (< 50% of baseline)
-  if (wordCount < baselineWordCount * 0.5) {
+  // Very brief emails (< 50% of baseline = >50% reduction)
+  if (deviation < -50) {
     riskScore = 8;
     sentiment = 'neutral';
     recommendedApproach = 'Warm Check-In';
   }
-  // Brief emails (50-75% of baseline)
-  else if (wordCount < baselineWordCount * 0.75) {
-    riskScore = 6;
+  // Moderately brief emails (50-75% of baseline = 25-50% reduction)
+  else if (deviation < -25) {
+    riskScore = 5;
     sentiment = 'neutral';
     recommendedApproach = 'Supportive Response';
   }
-  // Anxiety markers
-  else if (
-    /sorry|worried|stressed|anxious|not sure|perfect|afraid/i.test(email.body)
-  ) {
-    riskScore = 5;
-    sentiment = 'anxious';
-    recommendedApproach = 'Supportive Response';
+  // Normal range (within 25% of baseline) - LOW RISK
+  else if (Math.abs(deviation) <= 25) {
+    // Check for anxiety/frustration markers
+    if (/sorry|worried|stressed|anxious|not sure|perfect|afraid/i.test(email.body)) {
+      riskScore = 4;
+      sentiment = 'anxious';
+      recommendedApproach = 'Supportive Response';
+    }
+    // Positive markers
+    else if (/thank|appreciate|excited|great|looking forward/i.test(email.body)) {
+      riskScore = 1;
+      sentiment = 'positive';
+      recommendedApproach = 'Quick Answer';
+    }
+    // Normal, neutral emails - LOW RISK
+    else {
+      riskScore = 2;
+      sentiment = 'neutral';
+      recommendedApproach = 'Quick Answer';
+    }
   }
-  // Positive markers
-  else if (/thank|appreciate|excited|great|looking forward/i.test(email.body)) {
-    riskScore = 2;
-    sentiment = 'positive';
-    recommendedApproach = 'Quick Answer';
-  }
-  // Well-structured emails (lists, questions)
-  else if (/\d\.|1\)|•/.test(email.body) && wordCount > baselineWordCount) {
-    riskScore = 1;
-    sentiment = 'positive';
-    recommendedApproach = 'Quick Answer';
+  // Above baseline (longer emails) - typically good
+  else if (deviation > 25) {
+    // Check for frustration in long emails
+    if (/frustrated|angry|don't understand|still don't|unfair/i.test(email.body)) {
+      riskScore = 6;
+      sentiment = 'frustrated';
+      recommendedApproach = 'Supportive Response';
+    } else {
+      riskScore = 2;
+      sentiment = 'positive';
+      recommendedApproach = 'Quick Answer';
+    }
   }
 
   const redFlags: string[] = [];
-  if (wordCount < baselineWordCount * 0.5) {
+  if (deviation < -50) {
     redFlags.push('Communication decline - significantly briefer than baseline');
   }
   if (/extension|late|behind|busy|can't/i.test(email.body)) {
@@ -177,15 +226,15 @@ function generateFallbackAnalysis(
   return {
     sentiment,
     riskScore,
-    riskReasoning: `Word count: ${wordCount} vs baseline ${baselineWordCount}. ${
-      redFlags.length > 0 ? redFlags.join('. ') : 'No major concerns detected.'
+    riskReasoning: `Word count: ${wordCount} vs baseline ${baselineWordCount} (${deviation.toFixed(0)}% ${deviation >= 0 ? 'above' : 'below'}). ${
+      redFlags.length > 0 ? redFlags.join('. ') : 'Communication pattern within normal range. No major concerns.'
     }`,
     communicationPattern:
-      wordCount < baselineWordCount * 0.5
-        ? 'Declining engagement - brief communication'
-        : wordCount > baselineWordCount * 1.5
-        ? 'High engagement - detailed communication'
-        : 'Normal communication pattern',
+      deviation < -50
+        ? 'Declining engagement - significantly briefer than baseline'
+        : deviation > 50
+        ? 'High engagement - more detailed than baseline'
+        : 'Normal communication pattern - matches student baseline',
     redFlags,
     recommendedApproach,
     reasoning:
@@ -194,7 +243,7 @@ function generateFallbackAnalysis(
         : recommendedApproach === 'Supportive Response'
         ? 'Student shows signs of stress or reduced engagement. Offer support.'
         : recommendedApproach === 'Quick Answer'
-        ? 'Student is engaged and proactive. Provide efficient response.'
+        ? 'Student is engaged and functioning normally. Provide efficient response.'
         : 'Standard communication. Respond professionally.',
     timestamp: new Date().toISOString(),
   };

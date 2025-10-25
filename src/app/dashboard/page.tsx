@@ -54,6 +54,45 @@ export default function DashboardPage() {
     }
   };
 
+  // Handle sending teacher's response
+  const handleSendResponse = (studentId: string, response: string) => {
+    const newInteraction = {
+      date: new Date().toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      }),
+      type: 'teacher_response',
+      sentiment: 'positive',
+      summary: 'Teacher response sent',
+      details: response
+    };
+
+    setDynamicStudentUpdates(prev => {
+      const currentUpdates = prev[studentId] || {
+        interactions: [],
+        aiInsight: null
+      };
+
+      return {
+        ...prev,
+        [studentId]: {
+          ...currentUpdates,
+          interactions: [newInteraction, ...currentUpdates.interactions]
+        }
+      };
+    });
+
+    // Update activity log
+    const student = STUDENTS[studentId];
+    setActivityLog(prev => [
+      `Sent response to ${student?.name}`,
+      ...prev.slice(0, 4)
+    ]);
+  };
+
   // Handle real-time email analysis
   const handleSendEmail = async (emailData: {
     template: EmailTemplate;
@@ -1033,8 +1072,9 @@ export default function DashboardPage() {
       {detailEmail && (
         <EmailDetailView
           email={detailEmail}
-          student={STUDENTS[detailEmail.studentId]}
+          student={getStudentWithUpdates(detailEmail.studentId) || STUDENTS[detailEmail.studentId]}
           onClose={() => setDetailEmail(null)}
+          onSendResponse={handleSendResponse}
         />
       )}
     </div>

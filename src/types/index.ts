@@ -63,7 +63,7 @@ export interface Baseline {
 
 export interface Interaction {
   date: string;
-  type: 'email' | 'grade' | 'absence' | 'participation';
+  type: 'email' | 'grade' | 'absence' | 'participation' | 'teacher_response';
   sentiment: 'positive' | 'neutral' | 'anxious' | 'frustrated';
   summary: string;
   details?: string;
