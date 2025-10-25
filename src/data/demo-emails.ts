@@ -99,8 +99,8 @@ export const JAKE: StudentProfile = {
       type: 'communication',
       severity: 'medium',
       description: 'Message became unusually brief',
-      deviation: '-82%',
-      context: 'Current email is 8 words vs his typical 45-word thoughtful messages'
+      deviation: '-80%',
+      context: 'Current email is 9 words vs his typical 45-word thoughtful messages'
     }
   ],
 
@@ -126,7 +126,7 @@ This is a student signaling they need help but doesn't know how to ask.`,
         factor: 'Communication Pattern',
         weight: 0.95,
         confidence: 95,
-        reasoning: 'Brief message (-82% words) vs high baseline engagement'
+        reasoning: 'Brief message (-80% words) vs high baseline engagement'
       },
       {
         factor: 'Attendance Anomaly',
@@ -571,7 +571,7 @@ export const DEMO_INBOX: DemoEmail[] = [
     subject: 'Quick question',
     body: JAKE.interactions[0].details!,
     timestamp: '2024-10-24T08:15:00Z',
-    wordCount: 8,
+    wordCount: 9, // Actual: "Hey Ms. J, When is the test? - Jake"
     sentiment: 'neutral'
   },
   {
@@ -581,7 +581,7 @@ export const DEMO_INBOX: DemoEmail[] = [
     subject: 'Question about assignment',
     body: MIGUEL.interactions[0].details!,
     timestamp: '2024-10-18T15:30:00Z',
-    wordCount: 23,
+    wordCount: 26, // Actual word count
     sentiment: 'neutral'
   },
   {
@@ -591,7 +591,7 @@ export const DEMO_INBOX: DemoEmail[] = [
     subject: 'Quick Q',
     body: EMMA.interactions[0].details!,
     timestamp: '2024-10-24T09:00:00Z',
-    wordCount: 8,
+    wordCount: 11, // Actual: "Hey Ms. J, is the essay 5 or 6 pages? Thx!"
     sentiment: 'neutral'
   }
 ];

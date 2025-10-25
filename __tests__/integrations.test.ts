@@ -28,7 +28,7 @@ describe('AI Integration - Pattern Detection', () => {
     const jakeEmail = DEMO_INBOX.find(e => e.studentId === 'jake-martinez')!;
     const patterns = await detectPatterns(jakeEmail, JAKE);
 
-    // Jake's email is 8 words vs 45 baseline = 17.7% of baseline < 50%
+    // Jake's email is 9 words vs 45 baseline = 20% of baseline < 50%
     expect(patterns).toContain('Communication Withdrawal');
   });
 

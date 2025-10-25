@@ -54,7 +54,7 @@ describe('Demo Data - Student Profiles', () => {
     // Check communication red flag
     const commFlag = JAKE.redFlags.find(f => f.type === 'communication');
     expect(commFlag).toBeDefined();
-    expect(commFlag?.deviation).toBe('-82%');
+    expect(commFlag?.deviation).toBe('-80%');
   });
 
   test('JAKE has AI insight', () => {
@@ -122,7 +122,7 @@ describe('Demo Data - Email Inbox', () => {
     expect(jakeEmail).toBeDefined();
     expect(jakeEmail?.id).toBe('email-002');
     expect(jakeEmail?.subject).toBe('Quick question');
-    expect(jakeEmail?.wordCount).toBe(8);
+    expect(jakeEmail?.wordCount).toBe(9);
     expect(jakeEmail?.sentiment).toBe('neutral');
   });
 
@@ -138,7 +138,7 @@ describe('Demo Data - Email Inbox', () => {
     const miguelEmail = DEMO_INBOX.find(e => e.studentId === 'miguel-rodriguez');
     expect(miguelEmail).toBeDefined();
     expect(miguelEmail?.id).toBe('email-003');
-    expect(miguelEmail?.wordCount).toBe(23);
+    expect(miguelEmail?.wordCount).toBe(26);
     expect(miguelEmail?.sentiment).toBe('neutral');
   });
 
@@ -146,7 +146,7 @@ describe('Demo Data - Email Inbox', () => {
     const emmaEmail = DEMO_INBOX.find(e => e.studentId === 'emma-johnson');
     expect(emmaEmail).toBeDefined();
     expect(emmaEmail?.id).toBe('email-004');
-    expect(emmaEmail?.wordCount).toBe(8);
+    expect(emmaEmail?.wordCount).toBe(11);
     expect(emmaEmail?.sentiment).toBe('neutral');
   });
 });
@@ -176,8 +176,8 @@ describe('Demo Data - Deviation Calculations', () => {
     const actual = jakeEmail?.wordCount || 0;
     const deviation = ((baseline - actual) / baseline * 100).toFixed(0);
 
-    // 8 words vs 45 baseline = 82% reduction
-    expect(Math.abs(Number(deviation) - 82)).toBeLessThan(2);
+    // 9 words vs 45 baseline = 80% reduction
+    expect(Math.abs(Number(deviation) - 80)).toBeLessThan(2);
   });
 
   test('Jake\'s attendance deviation is accurate', () => {
