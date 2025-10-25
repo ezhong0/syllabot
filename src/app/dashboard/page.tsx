@@ -19,8 +19,8 @@ export default function DashboardPage() {
   // Sort emails based on AI toggle
   const sortedEmails = aiToggle
     ? [...DEMO_INBOX].sort((a, b) => {
-        const studentA = STUDENTS.get(a.studentId);
-        const studentB = STUDENTS.get(b.studentId);
+        const studentA = STUDENTS[a.studentId];
+        const studentB = STUDENTS[b.studentId];
         const riskA = studentA?.aiInsight.confidence || 0;
         const riskB = studentB?.aiInsight.confidence || 0;
         return riskB - riskA; // Higher risk first
@@ -29,7 +29,7 @@ export default function DashboardPage() {
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       );
 
-  const selectedStudent = selectedEmail ? STUDENTS.get(selectedEmail.studentId) : null;
+  const selectedStudent = selectedEmail ? STUDENTS[selectedEmail.studentId] : null;
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -92,7 +92,7 @@ export default function DashboardPage() {
               <CardContent className="p-0">
                 <div className="divide-y">
                   {sortedEmails.map((email) => {
-                    const student = STUDENTS.get(email.studentId);
+                    const student = STUDENTS[email.studentId];
                     if (!student) return null;
 
                     const riskScore = student.redFlags.length > 0

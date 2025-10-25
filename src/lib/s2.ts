@@ -117,7 +117,22 @@ export const ActivityTypes = {
   TRANSLATION_USED: 'translation.used',
   SESSION_STARTED: 'session.started',
   SESSION_ENDED: 'session.ended',
+  INTEGRATION_TEST: 'integration.test',
 } as const;
+
+/**
+ * Generic function to send any event
+ * Used for testing and custom events
+ */
+export async function sendEvent(
+  eventType: string,
+  data: Record<string, any>
+): Promise<void> {
+  return logActivity('demo-teacher', {
+    type: eventType,
+    metadata: data
+  });
+}
 
 /**
  * Helper function to log email viewed event
