@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 
     // Call Claude API for analysis (using latest model)
     const message = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20240620',
+      model: 'claude-3-7-sonnet-20250219',
       max_tokens: 1024,
       messages: [
         {

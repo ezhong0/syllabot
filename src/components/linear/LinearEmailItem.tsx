@@ -43,21 +43,21 @@ export function LinearEmailItem({
       icon: AlertCircle,
       label: `High (${riskScore}/10)`,
       color: 'bg-red-50 text-red-700 border-red-200',
-      bgColor: 'bg-red-50/50',
+      bgColor: 'bg-red-50/50 dark:bg-red-900/20',
       borderColor: 'border-l-red-500'
     },
     medium: {
       icon: AlertTriangle,
       label: `Medium (${riskScore}/10)`,
       color: 'bg-amber-50 text-amber-700 border-amber-200',
-      bgColor: 'bg-amber-50/50',
+      bgColor: 'bg-amber-50/50 dark:bg-amber-900/20',
       borderColor: 'border-l-amber-500'
     },
     low: {
       icon: CheckCircle,
       label: `Low (${riskScore}/10)`,
       color: 'bg-green-50 text-green-700 border-green-200',
-      bgColor: 'bg-green-50/50',
+      bgColor: 'bg-green-50/50 dark:bg-green-900/20',
       borderColor: 'border-l-green-500'
     }
   };
@@ -90,12 +90,12 @@ export function LinearEmailItem({
       whileHover={{ scale: 1.002 }}
       transition={{ duration: 0.15 }}
       className={cn(
-        "w-full text-left px-4 py-3 border-b border-gray-200 transition-colors relative group",
+        "w-full text-left px-4 py-3 border-b border-gray-200 dark:border-gray-800 transition-colors relative group",
         isSelected
-          ? `bg-purple-50/50 border-l-4 ${config.borderColor} pl-3`
+          ? `bg-purple-50/50 dark:bg-purple-900/20 border-l-4 ${config.borderColor} pl-3`
           : aiSortEnabled && riskLevel !== 'low'
           ? `${config.bgColor} border-l-2 ${config.borderColor} pl-3.5 hover:bg-opacity-70`
-          : "hover:bg-gray-50",
+          : "hover:bg-gray-50 dark:hover:bg-gray-800",
         !isSelected && "border-l-4 border-transparent"
       )}
     >
@@ -113,7 +113,7 @@ export function LinearEmailItem({
           {/* Name */}
           <span className={cn(
             "font-semibold text-sm truncate",
-            isSelected ? "text-purple-900" : "text-gray-900"
+            isSelected ? "text-purple-900 dark:text-purple-300" : "text-gray-900 dark:text-gray-100"
           )}>
             {student.name}
           </span>
@@ -136,7 +136,7 @@ export function LinearEmailItem({
         </div>
 
         {/* Right: Timestamp */}
-        <span className="text-xs text-gray-500 flex-shrink-0">
+        <span className="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">
           {formatTime(email.timestamp)}
         </span>
       </div>
@@ -144,28 +144,28 @@ export function LinearEmailItem({
       {/* Subject */}
       <div className={cn(
         "text-sm mb-1 truncate",
-        isSelected ? "text-purple-800 font-medium" : "text-gray-700 font-medium"
+        isSelected ? "text-purple-800 dark:text-purple-300 font-medium" : "text-gray-700 dark:text-gray-300 font-medium"
       )}>
         {email.subject}
       </div>
 
       {/* Preview */}
-      <div className="text-sm text-gray-600 line-clamp-2 mb-2">
+      <div className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
         {email.body}
       </div>
 
       {/* Outcome stakes (AI mode only) */}
       {aiSortEnabled && outcomes && riskLevel !== 'low' && (
-        <div className="flex items-center gap-4 text-xs mt-2 pt-2 border-t border-gray-200">
+        <div className="flex items-center gap-4 text-xs mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-1.5">
-            <span className="text-gray-500">Without intervention:</span>
-            <span className="font-semibold text-red-600">
+            <span className="text-gray-500 dark:text-gray-400">Without intervention:</span>
+            <span className="font-semibold text-red-600 dark:text-red-500">
               {outcomes.withoutIntervention.probability}%
             </span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-gray-500">With intervention:</span>
-            <span className="font-semibold text-green-600">
+            <span className="text-gray-500 dark:text-gray-400">With intervention:</span>
+            <span className="font-semibold text-green-600 dark:text-green-500">
               {outcomes.withIntervention.probability}%
             </span>
           </div>

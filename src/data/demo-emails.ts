@@ -606,3 +606,7 @@ export const STUDENTS: Record<string, StudentProfile> = {
   'miguel-rodriguez': MIGUEL,
   'emma-johnson': EMMA  // NEW: Calibration test case
 };
+
+// Export aliases for the new tab components
+export const demoEmails = DEMO_INBOX;
+export const studentProfiles = [JAKE, SARAH, MIGUEL, EMMA];

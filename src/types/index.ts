@@ -25,6 +25,8 @@ export interface DemoEmail {
   timestamp: string;
   wordCount: number;
   sentiment: 'positive' | 'neutral' | 'anxious' | 'frustrated';
+  read?: boolean;
+  starred?: boolean;
   // Live demo fields (for real-time analysis)
   isLiveDemo?: boolean;
   liveAnalysis?: {
@@ -36,6 +38,12 @@ export interface DemoEmail {
     recommendedApproach: string;
     reasoning: string;
     usedFallback?: boolean;
+  };
+  aiAnalysis?: {
+    riskScore: number;
+    sentiment: string;
+    pattern: string;
+    redFlags: string[];
   };
 }
 

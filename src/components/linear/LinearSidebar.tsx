@@ -75,8 +75,8 @@ export function LinearSidebar({ activeView, onViewChange, counts }: LinearSideba
         className={cn(
           "w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors group",
           isActive
-            ? "bg-purple-50 text-purple-700"
-            : "text-gray-700 hover:bg-gray-100"
+            ? "bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300"
+            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
         )}
       >
         <div className="flex items-center gap-3">
@@ -101,7 +101,7 @@ export function LinearSidebar({ activeView, onViewChange, counts }: LinearSideba
   };
 
   return (
-    <aside className="w-56 border-r border-gray-200 bg-white flex flex-col h-full">
+    <aside className="w-56 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex flex-col h-full">
       {/* Main navigation */}
       <nav className="flex-1 p-3 space-y-6">
         {/* Inbox */}
@@ -111,7 +111,7 @@ export function LinearSidebar({ activeView, onViewChange, counts }: LinearSideba
 
         {/* Students by Risk */}
         <div className="space-y-1">
-          <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <div className="px-3 py-1 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
             Students
           </div>
           {riskItems.map(renderNavItem)}
@@ -124,21 +124,21 @@ export function LinearSidebar({ activeView, onViewChange, counts }: LinearSideba
       </nav>
 
       {/* Bottom navigation */}
-      <div className="p-3 border-t border-gray-200">
+      <div className="p-3 border-t border-gray-200 dark:border-gray-800">
         {bottomItems.map(renderNavItem)}
       </div>
 
       {/* Tool Integration Badge */}
-      <div className="p-3 border-t border-gray-200 bg-gray-50">
-        <div className="text-xs text-gray-600 mb-2">
+      <div className="p-3 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
+        <div className="text-xs text-gray-600 dark:text-gray-400 mb-2">
           <span className="font-semibold">5 Tools Active</span>
         </div>
         <div className="flex flex-wrap gap-1">
-          <span className="text-xs px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded">🧠 Claude</span>
-          <span className="text-xs px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded">🔐 Stack</span>
-          <span className="text-xs px-1.5 py-0.5 bg-cyan-100 text-cyan-700 rounded">📊 s2</span>
-          <span className="text-xs px-1.5 py-0.5 bg-green-100 text-green-700 rounded">🌍 Lingo</span>
-          <span className="text-xs px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded">⚡ Cactus</span>
+          <span className="text-xs px-1.5 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded">🧠 Claude</span>
+          <span className="text-xs px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded">🔐 Stack</span>
+          <span className="text-xs px-1.5 py-0.5 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 rounded">📊 s2</span>
+          <span className="text-xs px-1.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded">🌍 Lingo</span>
+          <span className="text-xs px-1.5 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded">⚡ Cactus</span>
         </div>
       </div>
     </aside>

@@ -22,14 +22,19 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
   const [isResponseSent, setIsResponseSent] = useState(false);
 
   // Find the corresponding interaction in student history
-  const relatedInteraction = student.interactions.find(
+  const relatedInteraction = student?.interactions?.find(
     (i) => i.type === 'email' && i.details === email.body
   );
 
   // Handle sending the response
   const handleSendResponse = () => {
     if (generatedResponse && onSendResponse) {
-      onSendResponse(student.id, generatedResponse.response);
+      // For Miguel, send Spanish translation; for others, send English
+      const responseToSend = student.id === 'miguel-rodriguez' && generatedResponse.spanishTranslation
+        ? generatedResponse.spanishTranslation
+        : generatedResponse.response;
+
+      onSendResponse(student.id, responseToSend);
       setIsResponseSent(true);
     }
   };
@@ -90,13 +95,13 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col">
-        <CardHeader className="border-b">
+    <div className="fixed inset-0 bg-black/50 dark:bg-black/70 z-50 flex items-center justify-center p-4">
+      <Card className="w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
+        <CardHeader className="border-b border-gray-200 dark:border-gray-800">
           <div className="flex items-start justify-between">
             <div>
-              <CardTitle className="text-xl mb-2">Email Details</CardTitle>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+              <CardTitle className="text-xl mb-2 text-gray-900 dark:text-gray-100">Email Details</CardTitle>
+              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <span className="font-medium">{student.name}</span>
                 <span>•</span>
                 <span>{email.from}</span>
@@ -120,45 +125,45 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
         <CardContent className="p-6 overflow-y-auto">
           {/* Subject */}
           <div className="mb-6">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-1">{email.subject}</h3>
+            <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-1">{email.subject}</h3>
             <div className="flex items-center gap-2">
               <Badge
                 className={
                   email.sentiment === 'positive'
-                    ? 'bg-green-100 text-green-800'
+                    ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
                     : email.sentiment === 'anxious'
-                    ? 'bg-amber-100 text-amber-800'
+                    ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
                     : email.sentiment === 'frustrated'
-                    ? 'bg-red-100 text-red-800'
-                    : 'bg-gray-100 text-gray-800'
+                    ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
+                    : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                 }
               >
                 {email.sentiment}
               </Badge>
-              <span className="text-sm text-gray-500">{email.wordCount} words</span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">{email.wordCount} words</span>
             </div>
           </div>
 
           {/* Email Body */}
           <div className="mb-6">
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-              <p className="text-gray-800 whitespace-pre-line leading-relaxed">{email.body}</p>
+            <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+              <p className="text-gray-800 dark:text-gray-200 whitespace-pre-line leading-relaxed">{email.body}</p>
             </div>
           </div>
 
           {/* Analysis Section */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900">AI Analysis</h4>
+            <h4 className="font-semibold text-gray-900 dark:text-gray-100">AI Analysis</h4>
 
             {/* Word Count Analysis */}
-            <Card className="p-4 bg-blue-50 border-blue-200">
+            <Card className="p-4 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 text-2xl">📊</div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900 mb-1">
+                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
                     Communication Pattern
                   </p>
-                  <p className="text-xs text-gray-700">
+                  <p className="text-xs text-gray-700 dark:text-gray-300">
                     This email is <span className="font-semibold">{email.wordCount} words</span>,
                     compared to {student.name}'s baseline of{' '}
                     <span className="font-semibold">
@@ -167,7 +172,7 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
                     .
                   </p>
                   {email.wordCount < student.baseline.avgWordCount * 0.5 && (
-                    <p className="text-xs text-red-600 font-medium mt-2">
+                    <p className="text-xs text-red-600 dark:text-red-400 font-medium mt-2">
                       ⚠️ Significantly briefer than usual (-
                       {Math.round(
                         ((student.baseline.avgWordCount - email.wordCount) /
@@ -183,14 +188,14 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
 
             {/* Context from History */}
             {relatedInteraction && (
-              <Card className="p-4 bg-purple-50 border-purple-200">
+              <Card className="p-4 bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 text-2xl">🔍</div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900 mb-1">Historical Context</p>
-                    <p className="text-xs text-gray-700">{relatedInteraction.summary}</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Historical Context</p>
+                    <p className="text-xs text-gray-700 dark:text-gray-300">{relatedInteraction.summary}</p>
                     {relatedInteraction.sentiment !== 'neutral' && (
-                      <p className="text-xs text-gray-600 mt-1 capitalize">
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 capitalize">
                         Detected sentiment: {relatedInteraction.sentiment}
                       </p>
                     )}
@@ -201,18 +206,18 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
 
             {/* Red Flags Related to This Email */}
             {student.redFlags.some((flag) => flag.type === 'communication') && (
-              <Card className="p-4 bg-red-50 border-red-200">
+              <Card className="p-4 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 text-2xl">🚨</div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900 mb-1">Warning Signal</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Warning Signal</p>
                     {student.redFlags
                       .filter((flag) => flag.type === 'communication')
                       .map((flag, idx) => (
-                        <div key={idx} className="text-xs text-gray-700 mb-2">
+                        <div key={idx} className="text-xs text-gray-700 dark:text-gray-300 mb-2">
                           <p className="font-medium">{flag.description}</p>
-                          <p className="text-gray-600 mt-1">{flag.context}</p>
-                          <Badge className="mt-2 bg-red-600 text-white">
+                          <p className="text-gray-600 dark:text-gray-400 mt-1">{flag.context}</p>
+                          <Badge className="mt-2 bg-red-600 dark:bg-red-700 text-white">
                             {flag.deviation} deviation
                           </Badge>
                         </div>
@@ -224,17 +229,17 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
 
             {/* AI Recommendation */}
             {student.aiInsight.recommendation && (
-              <Card className="p-4 bg-green-50 border-green-200">
+              <Card className="p-4 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 text-2xl">💡</div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900 mb-1">
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
                       Recommended Response
                     </p>
-                    <p className="text-xs font-semibold text-green-900 mb-2">
+                    <p className="text-xs font-semibold text-green-900 dark:text-green-300 mb-2">
                       {student.aiInsight.recommendation.approach}
                     </p>
-                    <p className="text-xs text-gray-700">
+                    <p className="text-xs text-gray-700 dark:text-gray-300">
                       {student.aiInsight.recommendation.reasoning}
                     </p>
                   </div>
@@ -253,7 +258,7 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
                   <Sparkles className="h-4 w-4 mr-2" />
                   Draft AI Response (All 5 Tools)
                 </Button>
-                <p className="text-xs text-gray-500 text-center mt-2">
+                <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
                   See Claude, Slate, s2, Lingo, and Cactus work together
                 </p>
               </div>
@@ -262,41 +267,41 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
             {/* Loading Animation - All 5 Tools Activating */}
             {isGenerating && (
               <div className="pt-4">
-                <Card className="p-4 bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
+                <Card className="p-4 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-purple-200 dark:border-purple-800">
                   <div className="flex items-center gap-2 mb-4">
-                    <Sparkles className="h-5 w-5 text-purple-600 animate-pulse" />
-                    <p className="text-sm font-semibold text-purple-900">
+                    <Sparkles className="h-5 w-5 text-purple-600 dark:text-purple-400 animate-pulse" />
+                    <p className="text-sm font-semibold text-purple-900 dark:text-purple-300">
                       Generating AI Response...
                     </p>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 animate-pulse">
-                      <div className="h-2 w-2 bg-purple-600 rounded-full"></div>
-                      <Badge className="bg-purple-100 text-purple-800 border-purple-300">
+                      <div className="h-2 w-2 bg-purple-600 dark:bg-purple-400 rounded-full"></div>
+                      <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 border-purple-300 dark:border-purple-700">
                         🧠 Claude analyzing communication pattern...
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2 animate-pulse" style={{ animationDelay: '0.2s' }}>
-                      <div className="h-2 w-2 bg-blue-600 rounded-full"></div>
-                      <Badge className="bg-blue-100 text-blue-800 border-blue-300">
+                      <div className="h-2 w-2 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
+                      <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-300 dark:border-blue-700">
                         🎯 Slate adjusting tone for risk level...
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2 animate-pulse" style={{ animationDelay: '0.4s' }}>
-                      <div className="h-2 w-2 bg-cyan-600 rounded-full"></div>
-                      <Badge className="bg-cyan-100 text-cyan-800 border-cyan-300">
+                      <div className="h-2 w-2 bg-cyan-600 dark:bg-cyan-400 rounded-full"></div>
+                      <Badge className="bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300 border-cyan-300 dark:border-cyan-700">
                         📊 s2.dev logging generation event...
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2 animate-pulse" style={{ animationDelay: '0.6s' }}>
-                      <div className="h-2 w-2 bg-emerald-600 rounded-full"></div>
-                      <Badge className="bg-emerald-100 text-emerald-800 border-emerald-300">
+                      <div className="h-2 w-2 bg-emerald-600 dark:bg-emerald-400 rounded-full"></div>
+                      <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700">
                         🌍 Lingo preparing translation...
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2 animate-pulse" style={{ animationDelay: '0.8s' }}>
-                      <div className="h-2 w-2 bg-green-600 rounded-full"></div>
-                      <Badge className="bg-green-100 text-green-800 border-green-300">
+                      <div className="h-2 w-2 bg-green-600 dark:bg-green-400 rounded-full"></div>
+                      <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-300 dark:border-green-700">
                         ⚡ Cactus optimizing for mobile...
                       </Badge>
                     </div>
@@ -310,42 +315,53 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
               <div className="pt-4 space-y-4">
                 {/* Success Header */}
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
+                  <div className="h-8 w-8 bg-green-500 dark:bg-green-600 rounded-full flex items-center justify-center">
                     <span className="text-white text-xl">✓</span>
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-semibold text-green-900">
+                    <p className="text-sm font-semibold text-green-900 dark:text-green-300">
                       AI Response Generated
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       Generated at {generatedResponse.generatedAt}
                     </p>
                   </div>
                 </div>
 
                 {/* The Generated Response */}
-                <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
+                <Card className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-purple-200 dark:border-purple-800">
                   <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 text-purple-600" />
+                    <CardTitle className="text-base flex items-center gap-2 text-gray-900 dark:text-gray-100">
+                      <Sparkles className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                       Draft Email Response
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {/* English Response */}
-                    <div className="bg-white rounded-lg p-4 border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-semibold text-gray-700">English</span>
-                        <Badge className="bg-purple-600 text-white text-xs">Ready to send</Badge>
-                      </div>
-                      <p className="text-sm text-gray-800 whitespace-pre-line leading-relaxed">
-                        {generatedResponse.response}
-                      </p>
-                    </div>
-
-                    {/* Translation Toggle for Miguel */}
-                    {generatedResponse.spanishTranslation && (
+                    {/* For Miguel: Show Spanish version first with "Will be sent" badge */}
+                    {generatedResponse.spanishTranslation && student.id === 'miguel-rodriguez' ? (
                       <>
+                        {/* Spanish Version (Primary for Miguel) */}
+                        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-emerald-500 dark:border-emerald-600">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <Languages className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                              <span className="text-xs font-semibold text-emerald-900 dark:text-emerald-300">
+                                Spanish (Culturally Adapted by Lingo)
+                              </span>
+                            </div>
+                            <Badge className="bg-emerald-600 dark:bg-emerald-700 text-white text-xs">
+                              ✓ Will be sent
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line leading-relaxed mb-3">
+                            {generatedResponse.spanishTranslation}
+                          </p>
+                          <div className="text-xs text-emerald-600 dark:text-emerald-400 italic">
+                            ✓ Culturally adapted for formal teacher-parent communication (Mexican Spanish)
+                          </div>
+                        </div>
+
+                        {/* English Version (Reference only for Miguel) */}
                         <Button
                           onClick={() => setShowTranslation(!showTranslation)}
                           variant="outline"
@@ -353,68 +369,74 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
                           className="w-full"
                         >
                           <Languages className="h-4 w-4 mr-2" />
-                          {showTranslation ? 'Hide' : 'Show'} Spanish Translation (Lingo)
+                          {showTranslation ? 'Hide' : 'Show'} English Reference
                         </Button>
 
                         {showTranslation && (
-                          <div className="bg-white rounded-lg p-4 border border-emerald-200">
+                          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-300 dark:border-gray-700 opacity-75">
                             <div className="flex items-center justify-between mb-2">
-                              <span className="text-xs font-semibold text-emerald-900">
-                                Spanish (Culturally Adapted)
-                              </span>
-                              <Badge className="bg-emerald-600 text-white text-xs">
-                                95% confidence
-                              </Badge>
+                              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">English (Reference Only)</span>
+                              <Badge variant="outline" className="text-xs">Not sent</Badge>
                             </div>
-                            <p className="text-sm text-gray-800 whitespace-pre-line leading-relaxed mb-3">
-                              {generatedResponse.spanishTranslation}
+                            <p className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line leading-relaxed">
+                              {generatedResponse.response}
                             </p>
-                            <div className="text-xs text-emerald-600 italic">
-                              ✓ Culturally adapted for formal teacher-parent communication
-                            </div>
                           </div>
                         )}
+                      </>
+                    ) : (
+                      <>
+                        {/* English Response (For non-Miguel students) */}
+                        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">English</span>
+                            <Badge className="bg-purple-600 dark:bg-purple-700 text-white text-xs">Ready to send</Badge>
+                          </div>
+                          <p className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line leading-relaxed">
+                            {generatedResponse.response}
+                          </p>
+                        </div>
                       </>
                     )}
 
                     {/* Tool Contributions */}
                     <div className="space-y-2">
-                      <p className="text-xs font-semibold text-gray-700">Tool Contributions:</p>
+                      <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Tool Contributions:</p>
                       <div className="grid gap-2">
-                        <div className="bg-purple-50 border border-purple-200 rounded p-2">
+                        <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded p-2">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-sm">🧠</span>
-                            <span className="text-xs font-semibold text-purple-900">Claude</span>
+                            <span className="text-xs font-semibold text-purple-900 dark:text-purple-300">Claude</span>
                           </div>
-                          <p className="text-xs text-gray-700">{generatedResponse.toolContributions.claude}</p>
+                          <p className="text-xs text-gray-700 dark:text-gray-300">{generatedResponse.toolContributions.claude}</p>
                         </div>
-                        <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded p-2">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-sm">🎯</span>
-                            <span className="text-xs font-semibold text-blue-900">Slate</span>
+                            <span className="text-xs font-semibold text-blue-900 dark:text-blue-300">Slate</span>
                           </div>
-                          <p className="text-xs text-gray-700">{generatedResponse.toolContributions.slate}</p>
+                          <p className="text-xs text-gray-700 dark:text-gray-300">{generatedResponse.toolContributions.slate}</p>
                         </div>
-                        <div className="bg-cyan-50 border border-cyan-200 rounded p-2">
+                        <div className="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800 rounded p-2">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-sm">📊</span>
-                            <span className="text-xs font-semibold text-cyan-900">s2.dev</span>
+                            <span className="text-xs font-semibold text-cyan-900 dark:text-cyan-300">s2.dev</span>
                           </div>
-                          <p className="text-xs text-gray-700">{generatedResponse.toolContributions.s2}</p>
+                          <p className="text-xs text-gray-700 dark:text-gray-300">{generatedResponse.toolContributions.s2}</p>
                         </div>
-                        <div className="bg-emerald-50 border border-emerald-200 rounded p-2">
+                        <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded p-2">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-sm">🌍</span>
-                            <span className="text-xs font-semibold text-emerald-900">Lingo</span>
+                            <span className="text-xs font-semibold text-emerald-900 dark:text-emerald-300">Lingo</span>
                           </div>
-                          <p className="text-xs text-gray-700">{generatedResponse.toolContributions.lingo}</p>
+                          <p className="text-xs text-gray-700 dark:text-gray-300">{generatedResponse.toolContributions.lingo}</p>
                         </div>
-                        <div className="bg-green-50 border border-green-200 rounded p-2">
+                        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded p-2">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-sm">⚡</span>
-                            <span className="text-xs font-semibold text-green-900">Cactus</span>
+                            <span className="text-xs font-semibold text-green-900 dark:text-green-300">Cactus</span>
                           </div>
-                          <p className="text-xs text-gray-700">{generatedResponse.toolContributions.cactus}</p>
+                          <p className="text-xs text-gray-700 dark:text-gray-300">{generatedResponse.toolContributions.cactus}</p>
                         </div>
                       </div>
                     </div>
@@ -447,7 +469,7 @@ export function EmailDetailView({ email, student, onClose, onSendResponse }: Ema
           </div>
         </CardContent>
 
-        <div className="border-t p-4 bg-gray-50">
+        <div className="border-t border-gray-200 dark:border-gray-800 p-4 bg-gray-50 dark:bg-gray-950">
           <Button onClick={onClose} variant={generatedResponse ? 'outline' : 'default'} className="w-full">
             {generatedResponse ? 'Close (Response Generated ✓)' : 'Close'}
           </Button>

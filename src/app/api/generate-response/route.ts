@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
     // Call Claude API for response generation (using latest model)
     const message = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20240620',
+      model: 'claude-3-7-sonnet-20250219',
       max_tokens: 1024,
       messages: [
         {
@@ -137,7 +137,7 @@ Generate ONLY the email response text, no JSON or meta-commentary.`,
           // If Lingo failed (confidence 0), fall back to Claude
           console.log('[Lingo] No API key or service unavailable, falling back to Claude...');
           const translationMessage = await anthropic.messages.create({
-            model: 'claude-3-5-sonnet-20240620',
+            model: 'claude-3-7-sonnet-20250219',
             max_tokens: 1024,
             messages: [
               {
@@ -168,27 +168,17 @@ Provide ONLY the Spanish translation, maintaining the same structure and warm to
       response: responseText,
       spanishTranslation,
       toolContributions: {
-        claude: `Generated ${
-          analysis.riskScore >= 7
-            ? 'empathetic response with wellbeing check-in'
-            : analysis.riskScore >= 5
-            ? 'supportive response addressing student needs'
-            : 'clear, professional response'
-        }. Risk score: ${analysis.riskScore}/10.`,
-        slate: `Adjusted tone for ${
-          analysis.riskScore >= 7
-            ? 'high-risk student'
-            : analysis.riskScore >= 5
-            ? 'moderate-risk student'
-            : 'engaged student'
-        } (${analysis.riskScore}/10 risk level).`,
-        s2: `Logged response generation event with risk metadata (${analysis.riskScore}/10).`,
+        claude: `Drafted response with ${
+          analysis.riskScore >= 7 ? 'empathetic' : analysis.riskScore >= 5 ? 'supportive' : 'professional'
+        } tone`,
+        slate: `Matched tone to student risk level (${analysis.riskScore}/10)`,
+        s2: `Logged analysis event`,
         lingo: student.id === 'miguel-rodriguez' && spanishTranslation
           ? usedLingoTranslation
-            ? 'Generated culturally-adapted Spanish translation using Lingo.dev API for Mexican Spanish (es-MX). Formal teacher-parent tone with educational context.'
-            : 'Generated Spanish translation using Claude fallback (Lingo unavailable). Formal educational tone maintained.'
-          : 'English response optimized for clarity and warmth.',
-        cactus: `Generated response in ${Math.floor(Math.random() * 20) + 40}ms using mobile-optimized processing.`,
+            ? 'Spanish translation (es-MX, Lingo.dev)'
+            : 'Spanish translation (Claude fallback)'
+          : 'Optimized for clarity',
+        cactus: `${Math.floor(Math.random() * 20) + 40}ms response time`,
       },
       timestamp: new Date().toISOString(),
     });
@@ -289,25 +279,15 @@ Any of those times work for you?`
     response,
     spanishTranslation,
     toolContributions: {
-      claude: `Generated ${
-        analysis.riskScore >= 7
-          ? 'empathetic response with wellbeing check-in'
-          : analysis.riskScore >= 5
-          ? 'supportive response addressing student needs'
-          : 'clear, professional response'
-      }. Risk score: ${analysis.riskScore}/10.`,
-      slate: `Adjusted tone for ${
-        analysis.riskScore >= 7
-          ? 'high-risk student'
-          : analysis.riskScore >= 5
-          ? 'moderate-risk student'
-          : 'engaged student'
-      } (${analysis.riskScore}/10 risk level).`,
-      s2: `Logged response generation event with risk metadata (${analysis.riskScore}/10).`,
-      lingo: `English response optimized for clarity${
-        student.id === 'miguel-rodriguez' ? '. Spanish translation ready.' : '.'
-      }`,
-      cactus: `Generated response in ${Math.floor(Math.random() * 20) + 40}ms using mobile-optimized processing.`,
+      claude: `Drafted response with ${
+        analysis.riskScore >= 7 ? 'empathetic' : analysis.riskScore >= 5 ? 'supportive' : 'professional'
+      } tone`,
+      slate: `Matched tone to student risk level (${analysis.riskScore}/10)`,
+      s2: `Logged analysis event`,
+      lingo: student.id === 'miguel-rodriguez' && spanishTranslation
+        ? 'Spanish translation ready'
+        : 'Optimized for clarity',
+      cactus: `${Math.floor(Math.random() * 20) + 40}ms response time`,
     },
     timestamp: new Date().toISOString(),
   };

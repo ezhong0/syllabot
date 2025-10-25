@@ -55,16 +55,16 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
   const student = students[selectedTemplate.studentId];
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
-        <CardHeader className="border-b bg-gradient-to-r from-green-50 to-blue-50">
+    <div className="fixed inset-0 bg-black/50 dark:bg-black/70 z-50 flex items-center justify-center p-4">
+      <Card className="w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
+        <CardHeader className="border-b border-gray-200 dark:border-gray-800 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20">
           <div className="flex items-start justify-between">
             <div>
-              <CardTitle className="text-xl flex items-center gap-2">
-                <Send className="h-5 w-5 text-green-600" />
+              <CardTitle className="text-xl flex items-center gap-2 text-gray-900 dark:text-gray-100">
+                <Send className="h-5 w-5 text-green-600 dark:text-green-500" />
                 Compose Test Email
               </CardTitle>
-              <CardDescription className="mt-2">
+              <CardDescription className="mt-2 text-gray-600 dark:text-gray-400">
                 Select a template or write your own. Watch SyllaBot analyze it in real-time!
               </CardDescription>
             </div>
@@ -78,7 +78,7 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left: Template Selector */}
             <div className="lg:col-span-1">
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">Select Template</h3>
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Select Template</h3>
               <div className="space-y-2">
                 {EMAIL_TEMPLATES.map((template) => (
                   <button
@@ -87,19 +87,19 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
                     disabled={isSending}
                     className={`w-full text-left p-3 rounded-lg border-2 transition-all ${
                       selectedTemplate.id === template.id
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-blue-300 bg-white'
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
+                        : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 bg-white dark:bg-gray-800'
                     } ${isSending ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     <div className="flex items-start justify-between mb-1">
-                      <span className="text-sm font-semibold text-gray-900">
+                      <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                         {template.name}
                       </span>
                       {template.id === 'custom' && (
                         <Badge className="bg-purple-500 text-white text-xs">Custom</Badge>
                       )}
                     </div>
-                    <p className="text-xs text-gray-600 mb-2">{template.description}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{template.description}</p>
                     <div className="flex items-center gap-2">
                       <Badge variant="outline" className="text-xs">
                         {template.studentName}
@@ -124,13 +124,13 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
 
               {/* Template Info */}
               {selectedTemplate && (
-                <Card className="mt-4 bg-purple-50 border-purple-200">
+                <Card className="mt-4 bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800">
                   <CardContent className="p-3">
-                    <p className="text-xs font-semibold text-purple-900 mb-1">Expected Analysis:</p>
-                    <p className="text-xs text-gray-700">
+                    <p className="text-xs font-semibold text-purple-900 dark:text-purple-300 mb-1">Expected Analysis:</p>
+                    <p className="text-xs text-gray-700 dark:text-gray-300">
                       <span className="font-medium">Risk:</span> {selectedTemplate.expectedRisk}
                     </p>
-                    <p className="text-xs text-gray-700">
+                    <p className="text-xs text-gray-700 dark:text-gray-300">
                       <span className="font-medium">Sentiment:</span> {selectedTemplate.expectedSentiment}
                     </p>
                   </CardContent>
@@ -142,7 +142,7 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
             <div className="lg:col-span-2">
               <div className="space-y-4">
                 {/* Student Info */}
-                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border">
+                <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                   {student && (
                     <>
                       <img
@@ -151,8 +151,8 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
                         className="w-10 h-10 rounded-full"
                       />
                       <div>
-                        <p className="text-sm font-semibold text-gray-900">{student.name}</p>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{student.name}</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
                           Baseline: {student.baseline.avgWordCount} words avg
                         </p>
                       </div>
@@ -162,7 +162,7 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
 
                 {/* Subject Field */}
                 <div>
-                  <label className="text-sm font-semibold text-gray-700 mb-2 block">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 block">
                     Subject Line
                   </label>
                   <input
@@ -171,15 +171,15 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
                     onChange={(e) => setSubject(e.target.value)}
                     disabled={isSending}
                     placeholder="Email subject..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                   />
                 </div>
 
                 {/* Body Field */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-sm font-semibold text-gray-700">Email Body</label>
-                    <div className="flex items-center gap-2 text-xs text-gray-600">
+                    <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Email Body</label>
+                    <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
                       <span>{wordCount} words</span>
                       {student && (
                         <>
@@ -187,10 +187,10 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
                           <span
                             className={
                               wordCount < student.baseline.avgWordCount * 0.5
-                                ? 'text-red-600 font-medium'
+                                ? 'text-red-600 dark:text-red-500 font-medium'
                                 : wordCount < student.baseline.avgWordCount * 0.75
-                                ? 'text-amber-600'
-                                : 'text-green-600'
+                                ? 'text-amber-600 dark:text-amber-500'
+                                : 'text-green-600 dark:text-green-500'
                             }
                           >
                             {wordCount < student.baseline.avgWordCount * 0.5
@@ -211,17 +211,17 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
                     disabled={isSending}
                     placeholder="Email message..."
                     rows={10}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm disabled:opacity-50 disabled:cursor-not-allowed resize-none"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm disabled:opacity-50 disabled:cursor-not-allowed resize-none bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                   />
                 </div>
 
                 {/* Info Banner */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
                   <div className="flex items-start gap-2">
-                    <Sparkles className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <div className="text-xs text-blue-900">
+                    <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                    <div className="text-xs text-blue-900 dark:text-blue-300">
                       <p className="font-semibold mb-1">Real-Time AI Analysis</p>
-                      <p className="text-blue-700">
+                      <p className="text-blue-700 dark:text-blue-400">
                         When you click "Send & Analyze", all 5 YC tools will activate:
                         <span className="block mt-1">
                           🧠 Claude • 🎯 Slate • 📊 s2.dev • 🌍 Lingo • ⚡ Cactus
@@ -236,16 +236,16 @@ export function ComposeEmailModal({ onClose, onSendEmail, students }: ComposeEma
         </CardContent>
 
         {/* Footer */}
-        <div className="border-t p-4 bg-gray-50 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="border-t border-gray-200 dark:border-gray-800 p-4 bg-gray-50 dark:bg-gray-950 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             {isSending ? (
               <>
-                <div className="h-2 w-2 bg-blue-600 rounded-full animate-pulse"></div>
+                <div className="h-2 w-2 bg-blue-600 dark:bg-blue-500 rounded-full animate-pulse"></div>
                 <span>Analyzing with Claude API...</span>
               </>
             ) : (
               <>
-                <Zap className="h-4 w-4 text-green-600" />
+                <Zap className="h-4 w-4 text-green-600 dark:text-green-500" />
                 <span>Ready to analyze in real-time</span>
               </>
             )}
