@@ -2,7 +2,7 @@
 
 **AI-Powered Teacher Communication Assistant for Early Student Intervention**
 
-![SyllaBot Interface](img/Screenshot%202025-10-27%20at%2010.31.27%20AM.png)
+![SyllaBot Interface](img/01-inbox-sorted.png)
 
 ---
 
@@ -41,7 +41,7 @@ Same brevity. Different meaning. SyllaBot knows the difference.
 
 ### 1. AI-Sorted Inbox
 
-![Inbox sorted by AI risk](img/Screenshot%202025-10-27%20at%2010.31.27%20AM.png)
+![Inbox sorted by AI risk](img/01-inbox-sorted.png)
 
 Your inbox automatically sorts by AI-calculated risk score:
 - 🔴 **High Risk (7-10)** - Immediate attention needed
@@ -54,7 +54,7 @@ Each email shows predicted outcomes:
 
 ### 2. Compose & Test Emails
 
-![Compose test email](img/Screenshot%202025-10-27%20at%2010.31.35%20AM.png)
+![Compose test email](img/02-compose-email.png)
 
 Teachers can compose test emails and watch SyllaBot analyze them in real-time. Select from pre-built templates representing common student patterns:
 
@@ -65,7 +65,7 @@ Teachers can compose test emails and watch SyllaBot analyze them in real-time. S
 
 ### 3. Real-Time AI Analysis
 
-![AI analyzing email](img/Screenshot%202025-10-27%20at%2010.31.43%20AM.png)
+![AI analyzing email](img/03-ai-analysis.png)
 
 When you hit "Send & Analyze", watch the AI orchestration in action:
 
@@ -79,7 +79,7 @@ All working together in seconds to provide actionable insights.
 
 ### 4. Detailed Email Analysis
 
-![Email detail view](img/Screenshot%202025-10-27%20at%2010.32.51%20AM.png)
+![Email detail view](img/09-email-detail.png)
 
 Click any email to see the full AI breakdown:
 
@@ -98,7 +98,7 @@ Click any email to see the full AI breakdown:
 
 ### 5. Student Overview
 
-![Students page](img/Screenshot%202025-10-27%20at%2010.32.08%20AM.png)
+![Students page](img/06-students-page.png)
 
 View all students organized by risk level with behavioral pattern summaries:
 
@@ -122,7 +122,7 @@ View all students organized by risk level with behavioral pattern summaries:
 
 ### 6. Dashboard Metrics
 
-![Dashboard overview](img/Screenshot%202025-10-27%20at%2010.32.18%20AM.png)
+![Dashboard overview](img/07-dashboard.png)
 
 Track your teaching impact with data-driven insights:
 
@@ -143,7 +143,7 @@ Track your teaching impact with data-driven insights:
 
 ### 7. Action Items
 
-![Dashboard action items](img/Screenshot%202025-10-27%20at%2010.32.26%20AM.png)
+![Dashboard action items](img/08-action-items.png)
 
 Never miss urgent tasks:
 
@@ -169,7 +169,7 @@ See the real-world effect of AI-guided interventions:
 
 ### 10. AI-Generated Draft Responses
 
-![AI draft response](img/Screenshot%202025-10-27%20at%2010.33.08%20AM.png)
+![AI draft response](img/11-draft-response.png)
 
 Click "Generate Response" to get a personalized draft that:
 
